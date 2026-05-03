@@ -28,10 +28,7 @@ jobs:
         run: mvn clean package -DskipTests
 
       - name: Build Java Docker Image 
-        run: |
-          docker build -t java-backend:latest \
-          -t java-backend:${{ github.run_number }} \ 
-          -t java-backend:${{ github.sha }} .
+        run: docker build -t java-backend:latest -t java-backend:${{ github.run_number }} -t java-backend:${{ github.sha }} .
 
   python-check:
     name: Python Service Check
@@ -58,8 +55,5 @@ jobs:
         run: python -c "import app; print('Python service OK')"
 
       - name: Build Python Docker Image 
-        run: |
-          docker build -t python-service:latest \
-          -t python-service:${{ github.run_number }} \ 
-          -t python-service:${{ github.sha }} .
+        run: docker build -t python-service:latest -t python-service:${{ github.run_number }} -t python-service:${{ github.sha }} .
         
