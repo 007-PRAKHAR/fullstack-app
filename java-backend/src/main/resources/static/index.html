@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fullstack App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background: #f5f5f5;
+    }
+
+
+h1 {
+  color: #333;
+}
+
+button {
+  padding: 10px 15px;
+  margin: 5px;
+  border: none;
+  background: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+#output {
+  margin-top: 20px;
+  padding: 15px;
+  background: #222;
+  color: #0f0;
+  border-radius: 5px;
+  min-height: 50px;
+  white-space: pre-wrap;
+}
+
+
+  </style>
+</head>
+<body>
+
+  <h1>🚀 Fullstack App (Java + Python + Redis + k3d)</h1>
+
+<button onclick="callJava()">Call Java Backend</button> <button onclick="callPython()">Call Python via Java</button>
+
+  <div id="output">Click a button to see output...</div>
+
+  <script>
+    async function callJava() {
+      try {
+        const res = await fetch("/api/hello");
+        const text = await res.text();
+        document.getElementById("output").innerText = text;
+      } catch (err) {
+        document.getElementById("output").innerText = "Error: " + err;
+      }
+    }
+
+    async function callPython() {
+      try {
+        const res = await fetch("/api/python");
+        const text = await res.text();
+        document.getElementById("output").innerText = text;
+      } catch (err) {
+        document.getElementById("output").innerText = "Error: " + err;
+      }
+    }
+  </script>
+
+</body>
+</html>
+
