@@ -59,3 +59,30 @@ jobs:
         working-directory: python-service
         run: docker build -t python-service:latest -t python-service:${{ github.run_number }} -t python-service:${{ github.sha }} .
         
+  k3d-deploy:
+    name: Deploy to k3d Cluster
+    runs-on: [self-hosted, ubuntu-default]
+
+    needs: [java-build, python-check]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check if k3d cluster exists
+        run: |
+          if k3d cluster list | grep -q "fullstack-app"; then
+            echo "Cluster exists"
+          else
+            echo "Creating cluster fullstack-app"
+            k3d cluster create fullstack-app --agents 1
+          fi
+
+      - name: Set kubeconfig
+        run: |
+          export KUBECONFIG=$(k3d kubeconfig write fullstack-app)
+          echo "KUBECONFIG set"
+
+      - name: Verify cluster
+        run: kubectl get nodes
+        
