@@ -27,7 +27,7 @@ jobs:
         working-directory: java-backend
         run: mvn clean package -DskipTests
       - name: list of all files and directoris
-        run: ll
+        run: ls -l
       - name: Build Java Docker Image 
         run: docker build -t java-backend:latest -t java-backend:${{ github.run_number }} -t java-backend:${{ github.sha }} .
 
