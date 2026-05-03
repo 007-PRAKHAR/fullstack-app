@@ -12,6 +12,7 @@ spec:
     metadata:
       labels:
         app: java-backend
+        sidecar.istio.io/inject: true
     spec:
       containers:
         - name: java-backend
