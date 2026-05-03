@@ -74,8 +74,8 @@ jobs:
           if k3d cluster list | grep -q "fullstack-app"; then
             echo "Cluster exists"
           else
-            echo "Creating cluster fullstack-app"
-            k3d cluster create fullstack-app --agents 1
+            echo "Cluster fullstack-app doesn't exist"
+            exit 1
           fi
 
       - name: Set kubeconfig
