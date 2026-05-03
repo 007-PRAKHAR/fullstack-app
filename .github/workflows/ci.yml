@@ -61,7 +61,7 @@ jobs:
         
   k3d-deploy:
     name: Deploy to k3d Cluster
-    runs-on: [self-hosted, ubuntu-default]
+    runs-on: self-hosted
 
     needs: [java-build, python-check]
 
