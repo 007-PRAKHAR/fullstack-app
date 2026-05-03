@@ -11,7 +11,7 @@ jobs:
 
   java-build:
     name: Java Backend Build
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, ubuntu-default]
     
     steps:
       - name: Checkout code
@@ -30,7 +30,7 @@ jobs:
 
   python-check:
     name: Python Service Check
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, ubuntu-default]
     
     
     steps:
