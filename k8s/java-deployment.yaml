@@ -14,6 +14,7 @@ spec:
         app: java-backend
         sidecar.istio.io/inject: true
     spec:
+      serviceAccountName: fullstack-sa
       containers:
         - name: java-backend
           image: java-backend:latest
