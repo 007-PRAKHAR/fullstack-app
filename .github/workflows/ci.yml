@@ -26,9 +26,9 @@ jobs:
       - name: Build Java backend
         working-directory: java-backend
         run: mvn clean package -DskipTests
-      - name: list of all files and directoris
-        run: ls -l
+
       - name: Build Java Docker Image 
+        working-directory: java-backend
         run: docker build -t java-backend:latest -t java-backend:${{ github.run_number }} -t java-backend:${{ github.sha }} .
 
   python-check:
@@ -56,5 +56,6 @@ jobs:
         run: python -c "import app; print('Python service OK')"
 
       - name: Build Python Docker Image 
+        working-directory: python-service
         run: docker build -t python-service:latest -t python-service:${{ github.run_number }} -t python-service:${{ github.sha }} .
         
