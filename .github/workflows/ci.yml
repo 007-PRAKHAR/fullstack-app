@@ -31,6 +31,16 @@ jobs:
         working-directory: java-backend
         run: docker build -t java-backend:latest -t java-backend:${{ github.run_number }} -t java-backend:${{ github.sha }} .
 
+      - name: Archive Java Docker Image
+        run: docker save java-backend:latest -o java-backend.tar
+        
+      - name: Upload Java Image Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: java-backend-image
+          path: java-backend.tar
+          retention-days: 1
+          
   python-check:
     name: Python Service Check
     runs-on: ubuntu-latest    
@@ -57,6 +67,18 @@ jobs:
         working-directory: python-service
         run: docker build -t python-service:latest -t python-service:${{ github.run_number }} -t python-service:${{ github.sha }} .
         
+      # Save image to a file
+      - name: Archive Python Docker Image
+        run: docker save python-service:latest -o python-service.tar
+
+      # Upload image as a workflow artifact
+      - name: Upload Python Image Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-service-image
+          path: python-service.tar
+          retention-days: 1
+          
   k3d-deploy:
     name: Deploy to k3d Cluster
     runs-on: self-hosted
@@ -67,18 +89,33 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Download Java Image Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: java-backend-image
+
+      - name: Download Python Image Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: python-service-image
+          
+      - name: Build Docker Images Locally
+        run: |
+          docker build -t java-backend:latest ./java-backend
+          docker build -t python-service:latest ./python-service
+          
       - name: Check if k3d cluster exists
         run: |
-          if k3d cluster list | grep -q "fullstack-app"; then
+          if k3d cluster list | grep -q "full-stack"; then
             echo "Cluster exists"
           else
-            echo "Cluster fullstack-app doesn't exist"
+            echo "Cluster full-stack doesn't exist"
             exit 1
           fi
 
       - name: Set kubeconfig
         run: |
-          export KUBECONFIG=$(k3d kubeconfig write fullstack-app)
+          export KUBECONFIG=$(k3d kubeconfig write full-stack)
           echo "KUBECONFIG set"
 
       - name: Verify cluster
